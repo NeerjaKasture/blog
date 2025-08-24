@@ -1,0 +1,13 @@
+---
+title: "Blog Posts"
+listing:
+  contents: posts
+  type: grid
+  sort: "date desc"
+  categories: true
+  image-height: 150px
+  fields: [title, date, categories, image, description]
+---
+
+
+

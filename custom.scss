@@ -1,0 +1,129 @@
+/*-- scss:defaults --*/
+
+/* Import Google Fonts */
+@import 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap';
+
+$font-family-sans-serif: 'Poppins', sans-serif !default;
+
+/* Override United theme colors */
+$bs-primary: #dd4814 !default;   // United orange
+$bs-blue: #dd4814 !default;      // reuse same tone
+$bs-link-color: $bs-primary !default;
+$bs-pagination-active-bg: $bs-primary !default;
+$bs-btn-hover-bg: darken($bs-primary, 8%) !default;
+
+/*-- scss:rules --*/
+
+/* Navbar */
+.navbar {
+  background-color: $bs-primary;
+  font-weight: 500;
+}
+
+/* Title banner */
+.quarto-title-banner {
+  background-color: darken($bs-primary, 10%);
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1em;
+  padding: 1.5em 1em;
+}
+
+/* Buttons */
+.btn-primary {
+  color: #fff;
+  background-color: $bs-primary;
+  border-color: $bs-primary;
+}
+
+.btn-primary:hover {
+  background-color: darken($bs-primary, 8%);
+  border-color: darken($bs-primary, 8%);
+}
+
+/* Pagination */
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: $bs-primary;
+  border-color: $bs-primary;
+}
+
+.page-link {
+  color: $bs-primary;
+}
+
+.page-link:hover {
+  color: #fff;
+  background-color: $bs-primary;
+  border-color: $bs-primary;
+}
+
+/* Links */
+a {
+  color: $bs-primary;
+  text-decoration: none;
+}
+
+a:hover {
+  color: darken($bs-primary, 12%);
+  text-decoration: underline;
+}
+
+/* Strong text highlight */
+b, strong {
+  color: $bs-primary;
+  font-weight: 600;
+}
+
+
+/* Blog listing cards */
+div.quarto-post {
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 2rem;   /* ⬆ more breathing room */
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+  max-width: 900px;   /* ⬆ allow wider cards */
+  margin-left: auto;
+  margin-right: auto; /* ⬅ centers them */
+}
+
+/* Make cards “pop” on hover */
+div.quarto-post:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.15);
+}
+
+/* Post titles */
+div.quarto-post .listing-title {
+  font-size: 1.6rem;   /* ⬆ bigger */
+  font-weight: 600;
+  color: $bs-primary;
+  margin-bottom: 0.75rem;
+}
+
+/* Post description/excerpt */
+div.quarto-post .listing-description {
+  font-size: 1.1rem;   /* ⬆ slightly larger */
+  color: #333;
+  margin-top: 0.6rem;
+  line-height: 1.6;
+}
+
+/* Post date + categories */
+div.quarto-post .metadata {
+  font-size: 0.95rem;  /* ⬆ more readable */
+  color: #666;
+  margin-bottom: 0.8rem;
+}
+
+div.quarto-post .listing-categories .listing-category {
+  font-size: 0.85rem;   /* ⬆ slightly bigger */
+  padding: 4px 8px;
+  border-radius: 6px;
+  background-color: rgba($bs-primary, 0.08);
+  color: $bs-primary;
+  margin-right: 0.5rem;
+}

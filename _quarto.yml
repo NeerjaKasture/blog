@@ -1,8 +1,22 @@
 project:
-  title: "blog"
   type: website
   output-dir: docs
 
+website:
+  title: "Neerja Kasture's Blog"
+  navbar:
+    left:
+      
+      - text: Homepage
+        href: https://neerjakasture.github.io
+      # - text: "About"
+      #   href: about.qmd
+  page-footer:
+    center: "© 2025 Neerja Kasture"
 
-
+format:
+  html:
+    theme: 
+      - united
+      - custom.scss
 
