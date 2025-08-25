@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Conditional Neural Process/CNP.html",
       "/posts/first_post/first_post.html"
     ]
   }
