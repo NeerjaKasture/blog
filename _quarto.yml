@@ -17,6 +17,13 @@ website:
 format:
   html:
     theme: 
-      - united
-      - custom.scss
+      light: 
+        - united
+        - custom.scss
+      dark: 
+        - superhero
+        - custom.scss
+    toggle: true
+    respect-user-color-scheme: true
+
 
