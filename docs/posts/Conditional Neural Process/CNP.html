@@ -329,7 +329,7 @@ window.Quarto = {
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="https://neerjakasture.github.io"> 
 <span class="menu-text">Homepage</span></a>
@@ -357,6 +357,7 @@ window.Quarto = {
   <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The Model</a></li>
   <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#active-learning-loop" id="toc-active-learning-loop" class="nav-link" data-scroll-target="#active-learning-loop">Active Learning Loop</a></li>
   </ul>
 </nav>
     </div>
@@ -411,7 +412,7 @@ window.Quarto = {
 </section>
 <section id="imports-and-setup" class="level3">
 <h3 class="anchored" data-anchor-id="imports-and-setup">Imports and Setup</h3>
-<div id="cell-4" class="cell">
+<div id="cell-4" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -433,7 +434,7 @@ window.Quarto = {
 <section id="creating-training-data" class="level3">
 <h3 class="anchored" data-anchor-id="creating-training-data">Creating training data</h3>
 <p>Instead of training on a fixed dataset, our model learns by seeing functions. In every training step, we generate a new sine wave of the form <span class="math inline">\(𝑦=𝑎sin(𝑥)\)</span> where the amplitude <span class="math inline">\(𝑎\)</span> is randomly chosen from a uniform distribution in (-2,2). Then we randomly sample points from this function to be context points and target points. We have also added random gaussian noise to our data.</p>
-<div id="cell-7" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sine(x, a):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a <span class="op">*</span> np.sin(x)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -468,7 +469,7 @@ window.Quarto = {
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x_context, y_context, x_target, y_target</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Lets visualize some of these functions:</p>
-<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:465}}" data-outputid="85305640-e804-4d23-8878-a2a6f20efe43">
+<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:465}}" data-outputid="28c73015-00bb-4090-87c9-32482a562019" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -485,7 +486,7 @@ window.Quarto = {
 <li>Encoder : A neural network that takes in context pair <span class="math inline">\((x_i , y_i)\)</span> and transforms them into representation vector <span class="math inline">\(r_i\)</span>. To combine information from all context points, we take an average over all points and get a vector <span class="math inline">\(r\)</span> of same dimension as each vector <span class="math inline">\(r_i\)</span>.</li>
 <li>Decoder: A neural network that uses the representation <span class="math inline">\(r\)</span> to make predictions at target point <span class="math inline">\(x_t\)</span>. We pass in concatenated <span class="math inline">\([r,x_t]\)</span> as the input and the output is the predicted mean and variance of <span class="math inline">\(y_t\)</span>. We normalize the value of sigma to make sure it is positive.</li>
 </ol>
-<div id="cell-12" class="cell" data-execution_count="5">
+<div id="cell-12" class="cell" data-execution_count="53">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Encoder(nn.Module):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, output_dim):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -537,7 +538,7 @@ window.Quarto = {
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ConditionalNeuralProcess(r_dim).to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The code below will help us visualize the model inputs and predictions.</p>
-<div id="cell-14" class="cell" data-execution_count="6">
+<div id="cell-14" class="cell" data-execution_count="54">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_cnp_predictions(model, context_x, context_y, target_x, target_y):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">eval</span>()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -566,7 +567,7 @@ window.Quarto = {
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        x_plot_np.squeeze(),</span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        (mu_pred_np <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> sigma_pred_np).squeeze(),</span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        (mu_pred_np <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> sigma_pred_np).squeeze(),</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">'2σ Uncertainty'</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">'Variance'</span></span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Conditional Neural Process Predictions'</span>)</span>
@@ -576,8 +577,8 @@ window.Quarto = {
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    plt.grid(<span class="va">True</span>)</span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Lets sample data for an example function with a = 2. What does our model’s prediction look like before training?</p>
-<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:568}}" data-outputid="6018018b-efd0-42d7-be33-279c05663268">
+<p>Lets sample data for an example function with a = 1.5 , What does our model’s prediction look like before training?</p>
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:568}}" data-outputid="f1039ccc-6032-4a8b-9549-19acf6c0f9c2" data-execution_count="81">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -590,7 +591,7 @@ window.Quarto = {
 <section id="training" class="level3">
 <h3 class="anchored" data-anchor-id="training">Training</h3>
 <p>The model is trained by minimizing the negative log-likelihood (NLL) — encouraging the predicted distributions to assign high probability to the true target values.</p>
-<div id="cell-19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="6fd2c68f-173d-4ca8-d202-28b306b980ff">
+<div id="cell-19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="8c25c151-bb63-4a86-d90a-3e0a171da1ea" data-execution_count="82">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>r_dim <span class="op">=</span> <span class="dv">128</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ConditionalNeuralProcess(r_dim).to(device)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -618,27 +619,27 @@ window.Quarto = {
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    optimizer.step()</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (epoch<span class="op">+</span><span class="dv">1</span>) <span class="op">%</span> <span class="dv">1000</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>      <span class="co"># visualize_cnp_predictions(model,x_context_example,y_context_example,x_target_example,y_target_example)</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>      <span class="co">#visualize_cnp_predictions(model,x_context_example,y_context_example,x_target_example,y_target_example)</span></span>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>      <span class="bu">print</span>(<span class="ss">f"Epoch </span><span class="sc">{</span>epoch<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>num_epochs<span class="sc">}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">.</span>item()<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        mu, sigma <span class="op">=</span> model(x_context_example, y_context_example, x_plot_example)</span>
 <span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        predictions_example.append((mu.cpu().numpy(), sigma.cpu().numpy()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Epoch 1000/10000, Loss: -0.39137786626815796
-Epoch 2000/10000, Loss: 0.9421440958976746
-Epoch 3000/10000, Loss: -0.3440188467502594
-Epoch 4000/10000, Loss: -0.7226278781890869
-Epoch 5000/10000, Loss: -0.3659144937992096
-Epoch 6000/10000, Loss: -0.5449066162109375
-Epoch 7000/10000, Loss: -0.2978738844394684
-Epoch 8000/10000, Loss: -0.5170844197273254
-Epoch 9000/10000, Loss: -0.5219289064407349
-Epoch 10000/10000, Loss: -0.6298805475234985</code></pre>
+<pre><code>Epoch 1000/10000, Loss: 0.47015589475631714
+Epoch 2000/10000, Loss: -0.42924317717552185
+Epoch 3000/10000, Loss: -0.12417580932378769
+Epoch 4000/10000, Loss: -0.6538487076759338
+Epoch 5000/10000, Loss: -0.4501391053199768
+Epoch 6000/10000, Loss: -0.36041417717933655
+Epoch 7000/10000, Loss: -0.09112993627786636
+Epoch 8000/10000, Loss: -0.6509308218955994
+Epoch 9000/10000, Loss: -0.7228361368179321
+Epoch 10000/10000, Loss: -0.17287860810756683</code></pre>
 </div>
 </div>
 <p>The losses for the overall training process oscillate a lot but we can see a downward trend, as in the plot below.</p>
-<div id="cell-21" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:449}}" data-outputid="1ed62f48-3315-4b63-fc85-eefd13991b71" data-execution_count="13">
+<div id="cell-21" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:449}}" data-outputid="1ebdfbbc-825e-4464-be78-e381cbd905ca" data-execution_count="83">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -657,7 +658,7 @@ Epoch 10000/10000, Loss: -0.6298805475234985</code></pre>
 <section id="conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
 <p>So, after training, the model is predicting a good approximation of our function.</p>
-<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:568}}" data-outputid="cdab9357-7aac-48ab-cc50-9986d637db59">
+<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:568}}" data-outputid="bd66aee1-25ba-47e9-db3a-ace6058db414" data-execution_count="85">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -667,6 +668,157 @@ Epoch 10000/10000, Loss: -0.6298805475234985</code></pre>
 </div>
 </div>
 <p>I would say that CNPs are a rather simple approximation to neural processes. Their aggregator function being simply a mean may lose information and they do not model uncertainty as well, being a deterministic model. However they are simple to train and perform reasonably well on simple functions such as the sine wave.</p>
+</section>
+<section id="active-learning-loop" class="level3">
+<h3 class="anchored" data-anchor-id="active-learning-loop">Active Learning Loop</h3>
+<p>The CNP trained above can help us in choosing the next points to acquire in order to make even better predictions about a particular sine wave. Below is the code for two acquisitions strategies - a random strategy and an uncertainty based strategy which chooses point with maximum variance.</p>
+<div id="cell-31" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_acquisition(x_context, y_context, x_target, y_target):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> np.random.randint(<span class="bu">len</span>(x_target))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x_target[idx:idx<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> y_target[idx:idx<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    x_context_new <span class="op">=</span> torch.cat([x_context, x], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    y_context_new <span class="op">=</span> torch.cat([y_context, y], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    x_target_new <span class="op">=</span> torch.cat([x_target[:idx], x_target[idx<span class="op">+</span><span class="dv">1</span>:]], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    y_target_new <span class="op">=</span> torch.cat([y_target[:idx], y_target[idx<span class="op">+</span><span class="dv">1</span>:]], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>  x_context_new, y_context_new, x_target_new, y_target_new</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> uncertainty_acquisition(sigma, x_context, y_context, x_target, y_target):</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> torch.argmax(sigma).item()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x_target[idx:idx<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> y_target[idx:idx<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    x_context_new <span class="op">=</span> torch.cat([x_context, x], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    y_context_new <span class="op">=</span> torch.cat([y_context, y], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    x_target_new <span class="op">=</span> torch.cat([x_target[:idx], x_target[idx<span class="op">+</span><span class="dv">1</span>:]], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    y_target_new <span class="op">=</span> torch.cat([y_target[:idx], y_target[idx<span class="op">+</span><span class="dv">1</span>:]], dim<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>  x_context_new, y_context_new, x_target_new, y_target_new</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Lets try this on the example function above with a=1.5 We start with 2 context points and make one target point become context point per epoch.</p>
+<div id="cell-33" class="cell" data-execution_count="86">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span><span class="fl">1.5</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>x_context, y_context, x_target, y_target <span class="op">=</span> create_training_data(sine, a,num_points<span class="op">=</span><span class="dv">100</span>, num_context<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse_loss(y_pred,y_target):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> torch.sqrt(torch.mean((y_pred <span class="op">-</span> y_target) <span class="op">**</span> <span class="dv">2</span>)).item()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-34" class="cell" data-execution_count="87">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model_random <span class="op">=</span> copy.deepcopy(model)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model_uncertainty <span class="op">=</span> copy.deepcopy(model)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>opt_random <span class="op">=</span> torch.optim.Adam(model_random.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>opt_uncertainty <span class="op">=</span> torch.optim.Adam(model_uncertainty.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>x_context_r, y_context_r <span class="op">=</span> x_context.clone(), y_context.clone()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>x_target_r, y_target_r <span class="op">=</span> x_target.clone(), y_target.clone()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>x_context_u, y_context_u <span class="op">=</span> x_context.clone(), y_context.clone()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>x_target_u, y_target_u <span class="op">=</span> x_target.clone(), y_target.clone()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-36" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="63a60df6-fe19-41e9-be9e-5b9a1fb0e7f4" data-execution_count="89">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>losses_r, rmses_r <span class="op">=</span> [], []</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>losses_u, rmses_u <span class="op">=</span> [], []</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>frame_paths <span class="op">=</span> []</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>predictions_r, predictions_u <span class="op">=</span> [], []</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(num_epochs):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(x_target_r) <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> <span class="bu">len</span>(x_target_u) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No more target points left to acquire."</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Random acquisition</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    opt_random.zero_grad()</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    mu_r, sigma_r <span class="op">=</span> model_random(x_context_r, y_context_r, x_target_r)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    loss_r <span class="op">=</span> NLL(mu_r, sigma_r, y_target_r)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    loss_r.backward()</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    opt_random.step()</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    rmse_r <span class="op">=</span> torch.sqrt(torch.mean((mu_r <span class="op">-</span> y_target_r) <span class="op">**</span> <span class="dv">2</span>)).item()</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    losses_r.append(loss_r.item())</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    rmses_r.append(rmse_r)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    x_context_r, y_context_r, x_target_r, y_target_r <span class="op">=</span> random_acquisition(</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        x_context_r, y_context_r, x_target_r, y_target_r</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Uncertainty acquisition</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    opt_uncertainty.zero_grad()</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    mu_u, sigma_u <span class="op">=</span> model_uncertainty(x_context_u, y_context_u, x_target_u)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    loss_u <span class="op">=</span> NLL(mu_u, sigma_u, y_target_u)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    loss_u.backward()</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    opt_uncertainty.step()</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    rmse_u <span class="op">=</span> torch.sqrt(torch.mean((mu_u <span class="op">-</span> y_target_u) <span class="op">**</span> <span class="dv">2</span>)).item()</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    losses_u.append(loss_u.item())</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    rmses_u.append(rmse_u)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    x_context_u, y_context_u, x_target_u, y_target_u <span class="op">=</span> uncertainty_acquisition(</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>        sigma_u, x_context_u, y_context_u, x_target_u, y_target_u</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>      x_plot <span class="op">=</span> torch.linspace(<span class="op">-</span>np.pi, np.pi, <span class="dv">500</span>).unsqueeze(<span class="op">-</span><span class="dv">1</span>).to(device)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>      mu_r, sigma_r <span class="op">=</span> model_random(x_context_r, y_context_r, x_plot)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>      mu_u, sigma_u <span class="op">=</span> model_uncertainty(x_context_u, y_context_u, x_plot)</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>      predictions_r.append((mu_r.cpu().numpy(), sigma_r.cpu().numpy()))</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>      predictions_u.append((mu_u.cpu().numpy(), sigma_u.cpu().numpy()))</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">10</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>num_epochs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Random:     NLL=</span><span class="sc">{</span>loss_r<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss">, RMSE=</span><span class="sc">{</span>rmse_r<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  Uncertainty: NLL=</span><span class="sc">{</span>loss_u<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss">, RMSE=</span><span class="sc">{</span>rmse_u<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> epoch <span class="op">%</span> <span class="dv">5</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>          frame <span class="op">=</span> visualize_comparison_frame(model_random, model_uncertainty,</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>                                            x_context_r, y_context_r, x_target_r, y_target_r,</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>                                            x_context_u, y_context_u, x_target_u, y_target_u,</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>                                            epoch)</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>          frame_paths.append(frame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 0/50
+  Random:     NLL=-0.2657, RMSE=0.1938
+  Uncertainty: NLL=-0.2657, RMSE=0.1938
+Epoch 10/50
+  Random:     NLL=-0.7815, RMSE=0.1068
+  Uncertainty: NLL=-0.7625, RMSE=0.1060
+Epoch 20/50
+  Random:     NLL=-0.8836, RMSE=0.0985
+  Uncertainty: NLL=-0.8110, RMSE=0.1106
+Epoch 30/50
+  Random:     NLL=-0.8785, RMSE=0.1029
+  Uncertainty: NLL=-0.9843, RMSE=0.0924
+Epoch 40/50
+  Random:     NLL=-0.8947, RMSE=0.1020
+  Uncertainty: NLL=-1.0516, RMSE=0.0880</code></pre>
+</div>
+</div>
+<div id="cell-37" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:457}}" data-outputid="6b6019f1-9981-4913-e702-94631da540eb" data-execution_count="90">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CNP_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="comparison.gif" class="img-fluid figure-img"></p>
+<figcaption>Random vs Uncertainty</figcaption>
+</figure>
+</div>
+<p>Both strategies reduce the loss of the model. The uncertainty based method acquires more points from the peripheries — that is, when <span class="math inline">\(x\)</span> is close to <span class="math inline">\(\pi\)</span> or <span class="math inline">\(-\pi\)</span> whereas random method samples uniformly.</p>
 <p>Credits to <a href="https://kasparmartens.rbind.io/post/np/">Kaspar Martens</a> and <a href="https://colab.research.google.com/github/deepmind/neural-processes/blob/master/conditional_neural_process.ipynb#scrollTo=P3LJYP1Qh-jO">Deepmind</a> for an excellent tutorial on this topic.</p>
 
 
@@ -758,7 +910,7 @@ Epoch 10000/10000, Loss: -0.6298805475234985</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/neerjakasture\.github\.io\/blog");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

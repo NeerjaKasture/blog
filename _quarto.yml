@@ -4,9 +4,9 @@ project:
 
 website:
   title: "Neerja Kasture's Blog"
+  site-url: https://neerjakasture.github.io/blog
   navbar:
-    left:
-      
+    right:
       - text: Homepage
         href: https://neerjakasture.github.io
       # - text: "About"
