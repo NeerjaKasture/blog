@@ -31,13 +31,15 @@ $f = x_1x_2 + x_2x_3$ is multilinear but $f = x_1x_3+x_2^2$ is not multilinear.
 ## Main Theorem
 
 ::: {.callout-important icon=false}
+
 ## Theorem 1.1
+
 For every positive integer n, there is a multilinear polynomial $F=F_n$ in n variables with zero-one coefficients so that the following holds:
 
 1. There is a uniform algorithm that, given n, runs in time O(n) and outputs a multilinear branching program computing F.
 2. Over any field, every multilinear formula computing F must be of size $n^{\Omega(logn)}$.
 
-::: 
+:::
 
 By setting a lower bound on the complexity of formula and an upper bound on the complexity of ABP, we can prove a polynomial separation between them.
 
@@ -164,9 +166,11 @@ Arc partition distribution is uniform over $3^{n/2}.2^{n/2}$ outcomes. This is m
 f is arc-full-rank if for every partition $\pi$, the partial derivative matrix $M(f(\pi))$ has full rank.
 
 ::: {.callout-important icon=false}
+
 ## Theorem 3.1
+
 If f is an arc-full-rank multilinear polynomial in n variables over a field F, then any multilinear formula computing f over F has size at least $n^{o(logn)}$
-::: 
+:::
 
 Let’s set up a proof for the above theorem.
 
@@ -185,14 +189,17 @@ Not all variables in $X_k$ must appear in $f_k$. eg. $f=x_1x_3x_5$ is also a (3,
 :::
 
 ::: {.callout-tip icon=false}
+
 ## Lemma 1 (Shpilka&Yehudayoff)
+
 Any n-variate polynomial f computed by a multilinear formula of size s can be written
 as a sum $f=f_1+f_2+...+f_{s+1}$, each $f_i$ is a (KT)-product polynomial with $K \geq (logn)/100$and $T \geq n^{7/8}$.
 :::
 
-This reduces the problem to showing each such product polynomial has **low rank** under a random arc-partition.
+This reduces the problem to showing each such product polynomial has low rank under a random arc-partition.
 
 ::: {.callout-tip icon=false}
+
 ## Lemma 2
 
 There exists a constant $\delta \gt 0$ so that the following holds. Let n be a large enough even integer. Let f be a (KT)-product polynomial in n variables with $K \geq (logn)/100$ and $T \geq n^{7/8}$. Then
@@ -204,7 +211,7 @@ $$
 where $\pi$ ~ D.
 :::
 
-I.e., **almost every arc-partition makes the rank drop exponentially**.
+i.e., almost every arc-partition makes the rank drop exponentially.
 
 The proof of this lemma will be covered soon.
 
@@ -242,7 +249,7 @@ $$
 \sum_{i=1}^{s+1}Pr[rank(M((f_i)_\pi)) \geq 2^{n/2-n^\delta}] \leq (s+1) n^{-\delta logn}
 $$
 
-Since $s \leq n^{(\delta/2) logn}$, then $(s+1) n^{-\delta logn} \leq 2n^{-\delta/2logn}$, as $n \to \infin$ this becomes <1. Putting it together,
+Since $s \leq n^{(\delta/2) logn}$, then $(s+1) n^{-\delta logn} \leq 2n^{-\delta/2logn}$, as $n \to \infty$ this becomes <1. Putting it together,
 
 $$
 Pr[rank(M(f_\pi)) = 2^{n/2}] < 1
@@ -250,6 +257,7 @@ $$
 
 This is a contradiction! Hence, our assumption is incorrect.
 Thus, we have proved part 2 of theorem 1.1.
+
 ## Construction of ABP for arc full rank polynomial
 
 So, we will construct an ABP in which every path between start-node and end-node corresponds to a specific execution of the random process which samples arc-partitions.
@@ -270,6 +278,8 @@ At t>1, for any node [L,R] of size 2t, we add 3 edges:
 - Edge $e_2$ between [L,R] and [L-1,R+1] is labelled $\lambda_{e_2}(x_{L-1}+x_{R+1})$
 - Edge $e_3$ between [L,R] and [L,R+2] is labelled $\lambda_{e_3}(x_{R+1}+x_{R+2})$
 
+(Try drawing it!)
+
 Then, we can see that for every path $\gamma$ from start-node to end-node in the ABP, the list of edges along $\gamma$ yields a pairing P, every edge e in $\gamma$ corresponds to a pair $P_e=\{i_e,j_e\}$ of nodes in the n-cycle. Thus,
 
 $$
@@ -289,17 +299,21 @@ $$
 For any $y_t,z_t$ we can write $M(y_t + z_t) = \begin{pmatrix}0 & 1 \\1 & 0\end{pmatrix},$ which clearly has rank 2 over the field F. Then by property 2, we know that rank of M(f) is full. Then using Lemma 3 (below), we can say that the rank of $M(F_\pi)$ over $F(\Lambda)$ is atleast the rank of M(f) over field F. Hence, we can write the theorem:
 
 ::: {.callout-important icon=false}
+
 ## Theorem 3.4
 
 Over every field $\mathbb{F}$, the polynomial $F = F_n$ defined above satisfies the following:
 
 1.  F is computed by a linear-size (in the number of variables, which is $O(n^2)$) multilinear ABP. The ABP for F can be constructed uniformly in time $O(n^2)$.
 2.  F has zero-one coefficients.
-3.  F is arc-full-rank as a polynomial in the variables X over the field $\mathbb{F}(\Lambda)$ of rational functions in $\Lambda$
-::: 
+3.  F is arc-full-rank as a polynomial in the variables X over the field $\mathbb{F}(\Lambda)$ of rational functions in $\Lambda$.
+
+:::
 
 ::: {.callout-tip icon=false}
+
 ## Lemma 3
+
 Let K be a field and consider L, the field of rational functions $K(\lambda_1,\ldots,\lambda_m)$. If f is a polynomial in L[Y,Z] and $a_1,\ldots,a_m$ are elements of K, let g be the polynomial in K[Y,Z] obtained from f by substituting $\lambda_i$ with $a_i$. Then the rank over K of M(g) is at most the rank over L of M(f).
 :::
 
@@ -359,7 +373,9 @@ We can think of a color as a group, and a node in the color group with an edge t
 :::
 
 ::: {.callout-tip icon=false}
+
 ## Lemma 4
+
 There exists a constant C > 0 such that for all $C \leq K \leq n^{1/1000}$ the following holds:
 Let $S = (S_1, S_2 \dots S_k)$ be a partition of the n-cycle and suppose that $|S_k| \geq n^{7/8} \forall k \in [K]$. Then,
 
@@ -383,14 +399,12 @@ Let f be a (K,T)-product with $K = \left\lceil \frac{\log n}{100} \right\rceil
 - The degree of each node in H(P) is atleast 1.
   If degree of node k in H(P) is 0, no more than $n^{1/1500}$ edges connect it to k’. Then the total number of pairs from k to all other colors in H(P) is $\leq (G(P)-1).n^{1/1500}$ that is $\leq k.n^{1/1500}$. Then the total number of edges from k color node is $|V_k(P)| \leq k.n^{1/1500} = logn.n^{1/1500}$. But $V_k(P)\geq n^{1/1000}$.
 
-Claim: Let H be a graph with minimal degree at least one and M nodes, then there is a subset $\{h_1 \dots h_N\}$ of the nodes of H of size $N \geq M/2 -1$, so that for every $j \in [N-1]$, the degree of $h_{j+1}$ in the graph induced on the nodes not in $\{h_1 \dots h_j\}$ is at least one.
+**Claim:** Let H be a graph with minimal degree at least one and M nodes, then there is a subset $\{h_1 \dots h_N\}$ of the nodes of H of size $N \geq M/2 -1$, so that for every $j \in [N-1]$, the degree of $h_{j+1}$ in the graph induced on the nodes not in $\{h_1 \dots h_j\}$ is at least one.
 
 **Proof by induction:**
-
 Base case M≤2, if M = 1, degree ≥1 not possible! If M=2, the two nodes are connected to each other, we can pick either one and we are done.
 
 So for M > 2,
-
 Pick $h_1$ - the node having least degree, and consider the graph $H_1$ having removed that node.
 
 $H_1$ has at most one isolated (degree=0) node, lets call it $h_1'$.
@@ -414,7 +428,11 @@ $$
 Hence, for all $j \in [K]$, we find the conditionally probability for event $E_j$,
 
 $$
-\mathbb{P}[E_j \mid E_1, \ldots, E_{j-1}, P]\;\le\;\mathbb{P}_B\!\left[\, U/2 - n^{1/5000} \;\le\; B \;\le\; U/2 + n^{1/5000} \,\right]\;\le\;O\!\left( 2 n^{1/5000} n^{-1/3000} \right)\;\le\;n^{-\Omega(1)}
+\begin{align}
+\mathbb{P}[E_j \mid E_1, \ldots, E_{j-1}, P] &\le \mathbb{P}_B\!\left[\, U/2 - n^{1/5000} \;\le\; B \;\le\; U/2 + n^{1/5000} \,\right] \\
+&\le O\!\left( 2 n^{1/5000} n^{-1/3000} \right) \\
+&\le n^{-\Omega(1)}
+\end{align}
 $$
 
 By chain rule, $\mathbb{P}[\text{all balanced} \mid P] \le n^{-\Omega(G(P))}$. Average this over all pairings for G(P) ≥ K/1000,
@@ -424,13 +442,19 @@ $\mathbb{P}[\text{all balanced}∣G(P)>K/1000]≤\mathbb{E}\!\left[\, n^{-\Omega
 We can use Bayes theorem,
 
 $$
-\mathbb{P}[\text{all colors balanced}]=\mathbb{P}[\text{all balanced} \mid G(P) > K/1000] \cdot \mathbb{P}[G(P) > K/1000]\;+\;\mathbb{P}[\text{all balanced} \mid G(P) \le K/1000] \cdot \mathbb{P}[G(P) \le K/1000]
+\begin{align}
+\mathbb{P}[\text{all colors balanced}] &= \mathbb{P}[\text{all balanced} \mid G(P) > K/1000] \cdot \mathbb{P}[G(P) > K/1000] \\
+&\quad + \mathbb{P}[\text{all balanced} \mid G(P) \le K/1000] \cdot \mathbb{P}[G(P) \le K/1000]
+\end{align}
 $$
 
 Using Lemma 4,
 
 $$
-\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right]\;\le\;\mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) > K/1000 \right]\;+\;n^{-\Omega(K)}\;=\;n^{-\Omega(\log n)}
+\begin{align}
+\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right] &\le \mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) > K/1000 \right] + n^{-\Omega(K)} \\
+&= n^{-\Omega(\log n)}
+\end{align}
 $$
 
 Using Property 2&3, $\operatorname{rank}(M(f^{\Pi}))\;\le\;\prod_{k=1}^{K} 2^{\min(Y_k, Z_k)}\;=\;2^{\sum_{k=1}^{K} \min(Y_k, Z_k)}$
@@ -452,11 +476,13 @@ $$
 
 Hence, we have proved Lemma 3.
 
+## Conclusion
+
 The proof for Lemma 4 is remaining, but I leave it for the future.
 
 The main insight is that multilinear formulas necessarily break their input variables into many “color blocks”, and for the polynomial to have full rank under any partition, each block must split almost perfectly evenly between Y and Z. But a random arc-partition almost never splits _all_ blocks evenly; since the probability that the binomial will land in a tiny window around its mean is small to evenly split any given block is small, and for this to happen for a k blocks is very unlikely. This forces every small formula to fail rank-fullness, while the explicitly constructed ABP-based polynomial always maintains full rank. Hence formulas need superpolynomial size, whereas ABPs do not.
 
-### Citation
+## Citation
 
 Zeev Dvir, Guillaume Malod, Sylvain Perifel, and Amir Yehudayoff. 2012. Separating multilinear branching programs and formulas. In Proceedings of the forty-fourth annual ACM symposium on Theory of computing (STOC '12). Association for Computing Machinery, New York, NY, USA, 615–624. https://doi.org/10.1145/2213977.2214034
 

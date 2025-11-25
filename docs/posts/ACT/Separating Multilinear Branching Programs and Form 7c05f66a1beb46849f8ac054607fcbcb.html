@@ -325,10 +325,10 @@ window.Quarto = {
   <li><a href="#arc-partitions" id="toc-arc-partitions" class="nav-link" data-scroll-target="#arc-partitions">Arc Partitions</a></li>
   </ul></li>
   <li><a href="#arc-full-rank-polynomials" id="toc-arc-full-rank-polynomials" class="nav-link" data-scroll-target="#arc-full-rank-polynomials">Arc full rank polynomials</a></li>
-  <li><a href="#arc-partitions-and-product-polynomials" id="toc-arc-partitions-and-product-polynomials" class="nav-link" data-scroll-target="#arc-partitions-and-product-polynomials">Arc-partitions and product polynomials</a>
-  <ul class="collapse">
+  <li><a href="#construction-of-abp-for-arc-full-rank-polynomial" id="toc-construction-of-abp-for-arc-full-rank-polynomial" class="nav-link" data-scroll-target="#construction-of-abp-for-arc-full-rank-polynomial">Construction of ABP for arc full rank polynomial</a></li>
+  <li><a href="#arc-partitions-and-product-polynomials" id="toc-arc-partitions-and-product-polynomials" class="nav-link" data-scroll-target="#arc-partitions-and-product-polynomials">Arc-partitions and product polynomials</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -611,7 +611,7 @@ Lemma 1 (Shpilka&amp;Yehudayoff)
 <p>Any n-variate polynomial f computed by a multilinear formula of size s can be written as a sum <span class="math inline">\(f=f_1+f_2+...+f_{s+1}\)</span>, each <span class="math inline">\(f_i\)</span> is a (KT)-product polynomial with <span class="math inline">\(K \geq (logn)/100\)</span>and <span class="math inline">\(T \geq n^{7/8}\)</span>.</p>
 </div>
 </div>
-<p>This reduces the problem to showing each such product polynomial has <strong>low rank</strong> under a random arc-partition.</p>
+<p>This reduces the problem to showing each such product polynomial has low rank under a random arc-partition.</p>
 <div class="callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -629,7 +629,7 @@ Pr[rank(M(f_\pi)) \geq 2^{n/2 - n^\delta}] \leq n^{-\delta logn}
 <p>where <span class="math inline">\(\pi\)</span> ~ D.</p>
 </div>
 </div>
-<p>I.e., <strong>almost every arc-partition makes the rank drop exponentially</strong>.</p>
+<p>i.e., almost every arc-partition makes the rank drop exponentially.</p>
 <p>The proof of this lemma will be covered soon.</p>
 <p>Using these lemmas, we can prove the above theorem.</p>
 <p><strong>Proof by Contradiction:</strong></p>
@@ -651,11 +651,14 @@ Pr[rank(M(f_\pi)) = 2^{n/2}] \leq \sum_{i=1}^{s+1}Pr[rank(M((f_i)_\pi)) \geq 2^{
 <p><span class="math display">\[
 \sum_{i=1}^{s+1}Pr[rank(M((f_i)_\pi)) \geq 2^{n/2-n^\delta}] \leq (s+1) n^{-\delta logn}
 \]</span></p>
-<p>Since <span class="math inline">\(s \leq n^{(\delta/2) logn}\)</span>, then <span class="math inline">\((s+1) n^{-\delta logn} \leq 2n^{-\delta/2logn}\)</span>, as <span class="math inline">\(n \to \infin\)</span> this becomes &lt;1. Putting it together,</p>
+<p>Since <span class="math inline">\(s \leq n^{(\delta/2) logn}\)</span>, then <span class="math inline">\((s+1) n^{-\delta logn} \leq 2n^{-\delta/2logn}\)</span>, as <span class="math inline">\(n \to \infty\)</span> this becomes &lt;1. Putting it together,</p>
 <p><span class="math display">\[
 Pr[rank(M(f_\pi)) = 2^{n/2}] &lt; 1
 \]</span></p>
-<p>This is a contradiction! Hence, our assumption is incorrect. Thus, we have proved part 2 of theorem 1.1. ## Construction of ABP for arc full rank polynomial</p>
+<p>This is a contradiction! Hence, our assumption is incorrect. Thus, we have proved part 2 of theorem 1.1.</p>
+</section>
+<section id="construction-of-abp-for-arc-full-rank-polynomial" class="level2">
+<h2 class="anchored" data-anchor-id="construction-of-abp-for-arc-full-rank-polynomial">Construction of ABP for arc full rank polynomial</h2>
 <p>So, we will construct an ABP in which every path between start-node and end-node corresponds to a specific execution of the random process which samples arc-partitions.</p>
 <p>Let us construct an ABP through an example. Each node in the ABP corresponds to an arc [L,R], which sends an edge to each of the nodes [L-2,R], [L-1,R+1] and [L,R+2]. The edges have specially chosen labels that guarantee full rank w.r.t. to every arc-partition. The start node is the empty arc <span class="math inline">\(\phi\)</span>, the end node is the whole cycle [n] and intermediate nodes are even sized arcs on the cycle.</p>
 <p><strong>Example:</strong></p>
@@ -668,6 +671,7 @@ Pr[rank(M(f_\pi)) = 2^{n/2}] &lt; 1
 <li>Edge <span class="math inline">\(e_2\)</span> between [L,R] and [L-1,R+1] is labelled <span class="math inline">\(\lambda_{e_2}(x_{L-1}+x_{R+1})\)</span></li>
 <li>Edge <span class="math inline">\(e_3\)</span> between [L,R] and [L,R+2] is labelled <span class="math inline">\(\lambda_{e_3}(x_{R+1}+x_{R+2})\)</span></li>
 </ul>
+<p>(Try drawing it!)</p>
 <p>Then, we can see that for every path <span class="math inline">\(\gamma\)</span> from start-node to end-node in the ABP, the list of edges along <span class="math inline">\(\gamma\)</span> yields a pairing P, every edge e in <span class="math inline">\(\gamma\)</span> corresponds to a pair <span class="math inline">\(P_e=\{i_e,j_e\}\)</span> of nodes in the n-cycle. Thus,</p>
 <p><span class="math display">\[
 F = \sum_{\gamma} \prod_{e \in \gamma} \lambda_e \;\cdot\; \prod_{e \in \gamma} (x_{i_e} + x_{j_e})
@@ -693,7 +697,7 @@ Theorem 3.4
 <ol type="1">
 <li>F is computed by a linear-size (in the number of variables, which is <span class="math inline">\(O(n^2)\)</span>) multilinear ABP. The ABP for F can be constructed uniformly in time <span class="math inline">\(O(n^2)\)</span>.</li>
 <li>F has zero-one coefficients.</li>
-<li>F is arc-full-rank as a polynomial in the variables X over the field <span class="math inline">\(\mathbb{F}(\Lambda)\)</span> of rational functions in <span class="math inline">\(\Lambda\)</span></li>
+<li>F is arc-full-rank as a polynomial in the variables X over the field <span class="math inline">\(\mathbb{F}(\Lambda)\)</span> of rational functions in <span class="math inline">\(\Lambda\)</span>.</li>
 </ol>
 </div>
 </div>
@@ -786,11 +790,9 @@ Pr[G(P)\leq K/1000]\leq n^{-\Omega(K)}
 <li>Every two nodes <span class="math inline">\(k \neq k'\)</span> in G(P) are connected by an edge if <span class="math inline">\(|V_k(P) \cap V_{k'}(P)| \geq n^{1/1500}\)</span></li>
 <li>The degree of each node in H(P) is atleast 1. If degree of node k in H(P) is 0, no more than <span class="math inline">\(n^{1/1500}\)</span> edges connect it to k’. Then the total number of pairs from k to all other colors in H(P) is <span class="math inline">\(\leq (G(P)-1).n^{1/1500}\)</span> that is <span class="math inline">\(\leq k.n^{1/1500}\)</span>. Then the total number of edges from k color node is <span class="math inline">\(|V_k(P)| \leq k.n^{1/1500} = logn.n^{1/1500}\)</span>. But <span class="math inline">\(V_k(P)\geq n^{1/1000}\)</span>.</li>
 </ul>
-<p>Claim: Let H be a graph with minimal degree at least one and M nodes, then there is a subset <span class="math inline">\(\{h_1 \dots h_N\}\)</span> of the nodes of H of size <span class="math inline">\(N \geq M/2 -1\)</span>, so that for every <span class="math inline">\(j \in [N-1]\)</span>, the degree of <span class="math inline">\(h_{j+1}\)</span> in the graph induced on the nodes not in <span class="math inline">\(\{h_1 \dots h_j\}\)</span> is at least one.</p>
-<p><strong>Proof by induction:</strong></p>
-<p>Base case M≤2, if M = 1, degree ≥1 not possible! If M=2, the two nodes are connected to each other, we can pick either one and we are done.</p>
-<p>So for M &gt; 2,</p>
-<p>Pick <span class="math inline">\(h_1\)</span> - the node having least degree, and consider the graph <span class="math inline">\(H_1\)</span> having removed that node.</p>
+<p><strong>Claim:</strong> Let H be a graph with minimal degree at least one and M nodes, then there is a subset <span class="math inline">\(\{h_1 \dots h_N\}\)</span> of the nodes of H of size <span class="math inline">\(N \geq M/2 -1\)</span>, so that for every <span class="math inline">\(j \in [N-1]\)</span>, the degree of <span class="math inline">\(h_{j+1}\)</span> in the graph induced on the nodes not in <span class="math inline">\(\{h_1 \dots h_j\}\)</span> is at least one.</p>
+<p><strong>Proof by induction:</strong> Base case M≤2, if M = 1, degree ≥1 not possible! If M=2, the two nodes are connected to each other, we can pick either one and we are done.</p>
+<p>So for M &gt; 2, Pick <span class="math inline">\(h_1\)</span> - the node having least degree, and consider the graph <span class="math inline">\(H_1\)</span> having removed that node.</p>
 <p><span class="math inline">\(H_1\)</span> has at most one isolated (degree=0) node, lets call it <span class="math inline">\(h_1'\)</span>.</p>
 <p>Now consider the graph removing <span class="math inline">\(\{h_1,h_1'\}\)</span> having M-2 nodes which would also have minimal degree ≥ 1. We can say that there is a subset <span class="math inline">\(\{h_2 \dots h_N\}\)</span> to satisfy the claim where N ≥ M/2 -2. We can add <span class="math inline">\(h_1\)</span> back to get N+1 ≥ M/2 -1. At each step we can remove 1 or 2 nodes such that we get a sequence <span class="math inline">\(\{h_1 \dots h_N\}\)</span> that satisfies the claim.</p>
 <p>Now we have H(P) with M=|G(P)| and minimal degree≥1. Then there is a subset of colors <span class="math inline">\(\{k_1 \dots k_{K'}\}\)</span> with K’ ≥ |G(P)|/2 -1 such that the claim above is fulfilled.</p>
@@ -803,17 +805,27 @@ Pr[B=k]=O(1/\sqrt(U)) \leq O(n^{-1/3000})
 \]</span></p>
 <p>Hence, for all <span class="math inline">\(j \in [K]\)</span>, we find the conditionally probability for event <span class="math inline">\(E_j\)</span>,</p>
 <p><span class="math display">\[
-\mathbb{P}[E_j \mid E_1, \ldots, E_{j-1}, P]\;\le\;\mathbb{P}_B\!\left[\, U/2 - n^{1/5000} \;\le\; B \;\le\; U/2 + n^{1/5000} \,\right]\;\le\;O\!\left( 2 n^{1/5000} n^{-1/3000} \right)\;\le\;n^{-\Omega(1)}
+\begin{align}
+\mathbb{P}[E_j \mid E_1, \ldots, E_{j-1}, P] &amp;\le \mathbb{P}_B\!\left[\, U/2 - n^{1/5000} \;\le\; B \;\le\; U/2 + n^{1/5000} \,\right] \\
+&amp;\le O\!\left( 2 n^{1/5000} n^{-1/3000} \right) \\
+&amp;\le n^{-\Omega(1)}
+\end{align}
 \]</span></p>
 <p>By chain rule, <span class="math inline">\(\mathbb{P}[\text{all balanced} \mid P] \le n^{-\Omega(G(P))}\)</span>. Average this over all pairings for G(P) ≥ K/1000,</p>
 <p><span class="math inline">\(\mathbb{P}[\text{all balanced}∣G(P)&gt;K/1000]≤\mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) &gt; K/1000 \right] \leq n^{-\Omega(k)}\)</span></p>
 <p>We can use Bayes theorem,</p>
 <p><span class="math display">\[
-\mathbb{P}[\text{all colors balanced}]=\mathbb{P}[\text{all balanced} \mid G(P) &gt; K/1000] \cdot \mathbb{P}[G(P) &gt; K/1000]\;+\;\mathbb{P}[\text{all balanced} \mid G(P) \le K/1000] \cdot \mathbb{P}[G(P) \le K/1000]
+\begin{align}
+\mathbb{P}[\text{all colors balanced}] &amp;= \mathbb{P}[\text{all balanced} \mid G(P) &gt; K/1000] \cdot \mathbb{P}[G(P) &gt; K/1000] \\
+&amp;\quad + \mathbb{P}[\text{all balanced} \mid G(P) \le K/1000] \cdot \mathbb{P}[G(P) \le K/1000]
+\end{align}
 \]</span></p>
 <p>Using Lemma 4,</p>
 <p><span class="math display">\[
-\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right]\;\le\;\mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) &gt; K/1000 \right]\;+\;n^{-\Omega(K)}\;=\;n^{-\Omega(\log n)}
+\begin{align}
+\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right] &amp;\le \mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) &gt; K/1000 \right] + n^{-\Omega(K)} \\
+&amp;= n^{-\Omega(\log n)}
+\end{align}
 \]</span></p>
 <p>Using Property 2&amp;3, <span class="math inline">\(\operatorname{rank}(M(f^{\Pi}))\;\le\;\prod_{k=1}^{K} 2^{\min(Y_k, Z_k)}\;=\;2^{\sum_{k=1}^{K} \min(Y_k, Z_k)}\)</span></p>
 <p><span class="math inline">\(\min(Y_k, Z_k)
@@ -827,16 +839,19 @@ Y_k + Z_k = |S_k|\)</span>, then <span class="math inline">\(\min(Y_k, Z_k)
 \mathbb{P}\!\left[\, \operatorname{rank}(M(f_{\Pi})) \ge 2^{\,n/2 - n^{1/5000}} \right]\;\le\;\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right] \leq n^{-\Omega(\log n)}
 \]</span></p>
 <p>Hence, we have proved Lemma 3.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>The proof for Lemma 4 is remaining, but I leave it for the future.</p>
 <p>The main insight is that multilinear formulas necessarily break their input variables into many “color blocks”, and for the polynomial to have full rank under any partition, each block must split almost perfectly evenly between Y and Z. But a random arc-partition almost never splits <em>all</em> blocks evenly; since the probability that the binomial will land in a tiny window around its mean is small to evenly split any given block is small, and for this to happen for a k blocks is very unlikely. This forces every small formula to fail rank-fullness, while the explicitly constructed ABP-based polynomial always maintains full rank. Hence formulas need superpolynomial size, whereas ABPs do not.</p>
-<section id="citation" class="level3">
-<h3 class="anchored" data-anchor-id="citation">Citation</h3>
+</section>
+<section id="citation" class="level2">
+<h2 class="anchored" data-anchor-id="citation">Citation</h2>
 <p>Zeev Dvir, Guillaume Malod, Sylvain Perifel, and Amir Yehudayoff. 2012. Separating multilinear branching programs and formulas. In Proceedings of the forty-fourth annual ACM symposium on Theory of computing (STOC ’12). Association for Computing Machinery, New York, NY, USA, 615–624. https://doi.org/10.1145/2213977.2214034</p>
 <p>A. Shpilka and A. Yehudayo . Arithmetic circuits: A survey of recent results and open questions. Found. Trends Theor. Comput. Sci. 5, pages 207388, 2010.</p>
 <p>P.S. I have maintained the same theorem numbering from the paper, but the lemma numbering is mismatched.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
