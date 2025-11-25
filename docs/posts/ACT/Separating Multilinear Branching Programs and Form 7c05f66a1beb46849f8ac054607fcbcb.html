@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Neerja Kasture">
+<meta name="dcterms.date" content="2025-11-25">
+<meta name="description" content="Paper Presentation: proving a super tight poly-separation between multilinear ABPs and multilinear formulas">
+
+<title>Separating Multilinear Branching Programs and Formulas – Neerja Kasture’s Blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-bc185b5c5bdbcb35c2eb49d8a876ef70.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d72d402f5b905a21a76504da2bbf871c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-1c0f96b879543457d2dc70ef89baa8fa.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-d72d402f5b905a21a76504da2bbf871c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Neerja Kasture’s Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://neerjakasture.github.io"> 
+<span class="menu-text">Homepage</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-definitions" id="toc-basic-definitions" class="nav-link active" data-scroll-target="#basic-definitions">Basic Definitions</a></li>
+  <li><a href="#main-theorem" id="toc-main-theorem" class="nav-link" data-scroll-target="#main-theorem">Main Theorem</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a>
+  <ul class="collapse">
+  <li><a href="#partial-derivative-matrix" id="toc-partial-derivative-matrix" class="nav-link" data-scroll-target="#partial-derivative-matrix">Partial Derivative Matrix</a></li>
+  <li><a href="#rank-of-the-matrix-m" id="toc-rank-of-the-matrix-m" class="nav-link" data-scroll-target="#rank-of-the-matrix-m">Rank of the Matrix M</a></li>
+  <li><a href="#arc-partitions" id="toc-arc-partitions" class="nav-link" data-scroll-target="#arc-partitions">Arc Partitions</a></li>
+  </ul></li>
+  <li><a href="#arc-full-rank-polynomials" id="toc-arc-full-rank-polynomials" class="nav-link" data-scroll-target="#arc-full-rank-polynomials">Arc full rank polynomials</a></li>
+  <li><a href="#arc-partitions-and-product-polynomials" id="toc-arc-partitions-and-product-polynomials" class="nav-link" data-scroll-target="#arc-partitions-and-product-polynomials">Arc-partitions and product polynomials</a>
+  <ul class="collapse">
+  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Separating Multilinear Branching Programs and Formulas</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Algebraic Complexity Theory</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Paper Presentation: proving a super tight poly-separation between multilinear ABPs and multilinear formulas
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Neerja Kasture </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 25, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Goal:</strong> To prove a super tight polynomial separation between multilinear ABPs and multilinear arithmetic formulas. Specifically, to describe a n-variate polynomial F that is computed by a linear-size multilinear ABP but every multilinear formula computing F must be of size <span class="math inline">\(n^{\Omega(logn)}\)</span>.</p>
+<section id="basic-definitions" class="level2">
+<h2 class="anchored" data-anchor-id="basic-definitions">Basic Definitions</h2>
+<p><strong>Multilinear Polynomial</strong>: A polynomial is multilinear if it has degree at most one in each variable.</p>
+<p>e.g.&nbsp;determinant, permanent, matrix product.</p>
+<p><strong>Multilinear ABP:</strong> An ABP is multilinear if on every directed path from start-node to end-node no variable appears more than once.</p>
+<p><strong>Multilinear formula:</strong> A formula is multilinear if every sub-formula in it computes a multilinear polynomial.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(f = x_1x_2 + x_2x_3\)</span> is multilinear but <span class="math inline">\(f = x_1x_3+x_2^2\)</span> is not multilinear.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="main-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="main-theorem">Main Theorem</h2>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem 1.1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For every positive integer n, there is a multilinear polynomial <span class="math inline">\(F=F_n\)</span> in n variables with zero-one coefficients so that the following holds:</p>
+<ol type="1">
+<li>There is a uniform algorithm that, given n, runs in time O(n) and outputs a multilinear branching program computing F.</li>
+<li>Over any field, every multilinear formula computing F must be of size <span class="math inline">\(n^{\Omega(logn)}\)</span>.</li>
+</ol>
+</div>
+</div>
+<p>By setting a lower bound on the complexity of formula and an upper bound on the complexity of ABP, we can prove a polynomial separation between them.</p>
+<p>There are two main ideas used in this paper:</p>
+<ul>
+<li>The first is that of a full rank polynomial. A given polynomial f can be used to define a family of matrices <span class="math inline">\(\{M(f_\pi)\}_\pi\)</span> , where <span class="math inline">\(\pi\)</span> ranges over all partitions of the variables X to two sets of variables Y, Z of equal size . The polynomial f is said to have full-rank if the rank of <span class="math inline">\(M(f_\pi)\)</span> is full for every such <span class="math inline">\(\pi\)</span>.</li>
+<li>The other is constructing a special set of partitions called arc-partitions. This is a restricted subset of all partitions n! such that it is small enough for an ABP to compute full-rank polynomials, but big enough that formulas cannot compute full rank polynomials.</li>
+</ul>
+<p>We are able to make an ABP using an <span class="math inline">\(O(n^2)\)</span> algorithm such that a particular partition is represented by a particular path in ABP and it computes a full rank multilinear polynomial. And we make a probabilistic argument that the polynomial computed by the formula is not full rank for most partitions with very high probability, which implies that a formula cannot compute a full rank polynomial (where the formula is of less than superpolynomial size).</p>
+</section>
+<section id="preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
+<section id="partial-derivative-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="partial-derivative-matrix">Partial Derivative Matrix</h3>
+<p>For a multilinear polynomial <span class="math inline">\(f \in \mathbb{F}[Y,Z]\)</span>, the partial derivative matrix M(f) is defined such that</p>
+<p><span class="math inline">\(M_{pq}\)</span> = coefficient of <span class="math inline">\(pq\)</span> in <span class="math inline">\(f\)</span></p>
+<p><span class="math inline">\(Y,Z\)</span> are two disjoint sets of variables, p is a monic multilinear monomial in Y and q is a monic multilinear monomial in Z. Size of M is <span class="math inline">\(2^{|y|} * 2^{|z|}\)</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<strong>Example:</strong>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+f = 3y_1z_1 + 5y_2z_2 + y_1y_2z_1z_2 \\
+Y = \{y_1,y_2\}, Z=\{z_1,z_2\}
+\]</span></p>
+<p>Here monic multilinear monomials in Y are <span class="math inline">\(1,y_1,y_2,y_1y_2\)</span> and monic multilinear monomials in Z are <span class="math inline">\(1,z_1,z_2,z_1z_2\)</span>. Then the matrix M(f) will be</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>1</th>
+<th>z1</th>
+<th>z2</th>
+<th>z1z2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>y1</td>
+<td>0</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>y2</td>
+<td>0</td>
+<td>0</td>
+<td>5</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>y1y2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="rank-of-the-matrix-m" class="level3">
+<h3 class="anchored" data-anchor-id="rank-of-the-matrix-m">Rank of the Matrix M</h3>
+<p>The rank of this matrix is often used as a complexity measure for f.</p>
+<p>Some properties of this matrix, given polynomials <span class="math inline">\(f,g \in \mathbb{F}[Y,Z]\)</span></p>
+<ol type="1">
+<li><span class="math inline">\(rank(M(f +g)) &lt;= rank(M(f))+rank(M(g))\)</span></li>
+<li>If f, g are over disjoint sets of variables, <span class="math inline">\(rank(M(f.g)) = rank(M(f)). rank(M(g))\)</span></li>
+<li><span class="math inline">\(rank(M(f))&lt;= 2^{min(Y(f),Z(f))}\)</span>, where Y(f) is the number of Y variables appearing in f and Z(f) is the number of Z variables appearing in f.</li>
+</ol>
+</section>
+<section id="arc-partitions" class="level3">
+<h3 class="anchored" data-anchor-id="arc-partitions">Arc Partitions</h3>
+<p>Let <span class="math inline">\(X = \{x_0,x_1...x_{n-1}\}, Y = \{y_0,y_1...y_{n/2}\}\)</span> and <span class="math inline">\(Z = \{z_0,z_1...z_{n/2}\}\)</span>, where n is an even integer. We can define a partition <span class="math inline">\(\pi\)</span> as follows-</p>
+<p><span class="math display">\[
+\pi : X \to Y \cup Z
+\]</span></p>
+<p>i..e a perfect matching assigning each <span class="math inline">\(x_i\)</span> to a distinct variable in <span class="math inline">\(Y \cup Z\)</span>. Given a polynomial f in the variables X, we can define:</p>
+<p><span class="math display">\[
+f_\pi = f(\pi(x_0), \pi(x_1) ... \pi(x_{n-1})
+\]</span></p>
+<p>Consider a n-cycle graph : graph with n nodes labelled <span class="math inline">\(\{0,1…n-1\}\)</span> and edges between i and (i+1) modulo n.</p>
+<p>[i,j] → denotes the arc between i and j i.e.&nbsp;the set of nodes on the path {i,i+1 … j-1,j} on the path from i to j in graph, where <span class="math inline">\(i \neq j\)</span>.</p>
+<p>The size of the arc is the number of nodes it contains.</p>
+<p>Lets construct a arc partition through an example. Here, a pairing is a list of disjoint pairs of nodes in the cycle and we define a distribution <span class="math inline">\(D_p\)</span> on a family of pairings. A random pairing will be constructed in n/2 steps for a n-cycle graph. So, at <span class="math inline">\(t \in [n/2]\)</span>, we shall have a pairing <span class="math inline">\((P_1...P_t)\)</span> of the arc <span class="math inline">\([L_t,R_t]\)</span></p>
+<p><strong>Example:</strong></p>
+<p>Take an 8-cycle graph with <span class="math inline">\(X = \{0,1,2,3,4,5,6,7\}\)</span>. We must create 4 disjoint pairs.</p>
+<p>At t=1, <span class="math inline">\(L_1=0, R_1=1\)</span> by definition. So, we have arc [0,1] and <span class="math inline">\(P_1 =\{0,1\}\)</span>.</p>
+<p>At t=2, we choose <span class="math inline">\(P_2\)</span> by the distribution</p>
+<p><span class="math display">\[
+P_{t+1} = \begin{cases}
+\{L_t- 2,L_t - 1\} &amp; \text{with probability } \frac{1}{3}, \\
+\{L_t - 1, R_t+1\} &amp; \text{with probability } \frac{1}{3}, \\
+\{R_t + 1, R_t + 2\} &amp; \text{with probability } \frac{1}{3}
+\end{cases}
+\]</span></p>
+<p>where all arithmetic is modulo 8. So, we have</p>
+<p><span class="math display">\[
+P_2 = \begin{cases}
+\{6,7\} (mod 8) &amp; \text{with probability } \frac{1}{3}, \\
+\{7, 2\}(mod 8) &amp; \text{with probability } \frac{1}{3}, \\
+\{2, 3\} &amp; \text{with probability } \frac{1}{3}
+\end{cases}
+\]</span></p>
+<p>Say we choose <span class="math inline">\(P_2=\{7,2\}(mod8)\)</span>. The arc expands to include the pair as <span class="math inline">\([L_{t+1},R_{t+1}] = [L_{t},R_{t}] \cup P_{t+1}\)</span> . Thus, <span class="math inline">\([L_2,R_2] = [7,2]=\{7,0,1,2\}\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>Image showing the possible choices for the next pair <span class="math inline">\(P_{t+1}\)</span></p>
+<p>At t=3, we have the choices {5,6}, {6,3} and {3,4}. Suppose we choose <span class="math inline">\(P_3=\{3,4\}\)</span>, we have <span class="math inline">\([L_3,R_3]=[7,4]=\{7,0,1,2,3,4\}\)</span>.</p>
+<p>At t=4, we have the choices {5,6}, {6,5} and {5,6}. Say we choose <span class="math inline">\(P_4 = \{5,6\}\)</span>, we have <span class="math inline">\([L_4,R_4]=[7,6]=\{7,0,1,2,3,4,5,6\}\)</span>.</p>
+<p>The final pairing is <span class="math inline">\(P=(P_1,P_2...P_{n/2}) = (\{0,1\},\{7,2\},\{3,4\},\{5,6\})\)</span>.</p>
+<p>Given the pairing P ~ DP, we now produce the mapping <span class="math inline">\(\pi\)</span> as follows:</p>
+<p>For every pair <span class="math inline">\(P =\{i_t,j_t\}, t \in [n/2]\)</span> independently,</p>
+<ul>
+<li><span class="math inline">\(\pi(x_{i_t}) = y_t, \pi(x_{j_t}) = z_t\)</span> with probability 1/2</li>
+<li><span class="math inline">\(\pi(x_{i_t}) = z_t, \pi(x_{j_t}) = y_t\)</span> with probability 1/2</li>
+</ul>
+<p>Arc partition distribution is uniform over <span class="math inline">\(3^{n/2}.2^{n/2}\)</span> outcomes. This is much smaller than the n! partitions used in earlier works.</p>
+<hr>
+</section>
+</section>
+<section id="arc-full-rank-polynomials" class="level2">
+<h2 class="anchored" data-anchor-id="arc-full-rank-polynomials">Arc full rank polynomials</h2>
+<p>f is arc-full-rank if for every partition <span class="math inline">\(\pi\)</span>, the partial derivative matrix <span class="math inline">\(M(f(\pi))\)</span> has full rank.</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem 3.1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If f is an arc-full-rank multilinear polynomial in n variables over a field F, then any multilinear formula computing f over F has size at least <span class="math inline">\(n^{o(logn)}\)</span></p>
+</div>
+</div>
+<p>Let’s set up a proof for the above theorem.</p>
+<p>Def: A multilinear polynomial f in variables X is called a (KT)-product polynomial if there exists K disjoint sets of variables <span class="math inline">\(X_1...X_k\)</span>, each of size at least T, so that <span class="math inline">\(f=f_1f_2...f_k\)</span> and each <span class="math inline">\(f_k, k \in [K]\)</span>, is a multilinear polynomial in <span class="math inline">\(X_k\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(f=(x_1+2x_2)(3x_3x_4+x_3)(x_5+x_6)\)</span> is a (3,2)-product polynomial:</p>
+<ul>
+<li><span class="math inline">\(X_1=\{x_1,x_2\}, X_2=\{x_3,x_4\}, X_3=\{x_5,x_6\}\)</span>, is a product of k=3 factors having blocks with 2 variables</li>
+<li><span class="math inline">\(f_1=(x_1+2x_2), f_2=(3x_3x_4+x_3), f_3=(x_5+x_6)\)</span> , each <span class="math inline">\(f_k\)</span> is multilinear and uses variables from its own block</li>
+</ul>
+<p>Not all variables in <span class="math inline">\(X_k\)</span> must appear in <span class="math inline">\(f_k\)</span>. eg. <span class="math inline">\(f=x_1x_3x_5\)</span> is also a (3,2)-product polynomial.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma 1 (Shpilka&amp;Yehudayoff)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Any n-variate polynomial f computed by a multilinear formula of size s can be written as a sum <span class="math inline">\(f=f_1+f_2+...+f_{s+1}\)</span>, each <span class="math inline">\(f_i\)</span> is a (KT)-product polynomial with <span class="math inline">\(K \geq (logn)/100\)</span>and <span class="math inline">\(T \geq n^{7/8}\)</span>.</p>
+</div>
+</div>
+<p>This reduces the problem to showing each such product polynomial has <strong>low rank</strong> under a random arc-partition.</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma 2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There exists a constant <span class="math inline">\(\delta \gt 0\)</span> so that the following holds. Let n be a large enough even integer. Let f be a (KT)-product polynomial in n variables with <span class="math inline">\(K \geq (logn)/100\)</span> and <span class="math inline">\(T \geq n^{7/8}\)</span>. Then</p>
+<p><span class="math display">\[
+Pr[rank(M(f_\pi)) \geq 2^{n/2 - n^\delta}] \leq n^{-\delta logn}
+\]</span></p>
+<p>where <span class="math inline">\(\pi\)</span> ~ D.</p>
+</div>
+</div>
+<p>I.e., <strong>almost every arc-partition makes the rank drop exponentially</strong>.</p>
+<p>The proof of this lemma will be covered soon.</p>
+<p>Using these lemmas, we can prove the above theorem.</p>
+<p><strong>Proof by Contradiction:</strong></p>
+<p>Assume there is a multilinear formula <span class="math inline">\(\phi\)</span> of size <span class="math inline">\(s \leq n^{(\delta/2) logn}\)</span> computing a n variate arc-full-rank polynomial f.&nbsp;Let <span class="math inline">\(\pi\)</span> be a random partition according to <span class="math inline">\(D\)</span>.</p>
+<p>Then, <span class="math inline">\(Pr[rank(M(f_\pi)) = 2^{n/2}] = 1\)</span> for an arc-full-rank f.</p>
+<p>From Lemma 1, <span class="math inline">\(f=f_1+f_2+...+f_{s+1}\)</span>. Let us apply the partition to this,</p>
+<p><span class="math inline">\(f_\pi=(f_1)_\pi+(f_2)_\pi+...+(f_{s+1})_\pi\)</span>. Then, <span class="math inline">\(M(f_{\pi}) = M\!\left( \sum_{i=1}^{s+1} (f_i)_{\pi} \right).\)</span></p>
+<p><span class="math inline">\(Rank(M(f_{\pi})) \leq \sum_{i=1}^{s+1}Rank(M\!\left(  (f_i)_{\pi} \right))\)</span> using property 1.</p>
+<p>The sum of these s+1 non-negative terms is at least <span class="math inline">\(2^{n/2}\)</span>.</p>
+<p><span class="math inline">\(\exists i \in [s+1]\)</span> with rank <span class="math inline">\(Rank(M((f_i)_\pi)) \geq 2^{n/2}/(s+1)\)</span> (Pigeonhole)</p>
+<p><span class="math display">\[
+Pr[rank(M(f_\pi)) = 2^{n/2}] \leq Pr[rank(M((f_i)_\pi)) \geq 2^{n/2}/(s+1)]
+\]</span></p>
+<p>Using the union bound,</p>
+<p><span class="math display">\[
+Pr[rank(M(f_\pi)) = 2^{n/2}] \leq \sum_{i=1}^{s+1}Pr[rank(M((f_i)_\pi)) \geq 2^{n/2}/(s+1)]
+\]</span></p>
+<p>Choose n large enough, <span class="math inline">\(\delta &gt; 0\)</span>, such that <span class="math inline">\(2^{n/2}/(s+1) &gt; 2^{n/2-n^\delta}\)</span>. Using lemma 2,</p>
+<p><span class="math display">\[
+\sum_{i=1}^{s+1}Pr[rank(M((f_i)_\pi)) \geq 2^{n/2-n^\delta}] \leq (s+1) n^{-\delta logn}
+\]</span></p>
+<p>Since <span class="math inline">\(s \leq n^{(\delta/2) logn}\)</span>, then <span class="math inline">\((s+1) n^{-\delta logn} \leq 2n^{-\delta/2logn}\)</span>, as <span class="math inline">\(n \to \infin\)</span> this becomes &lt;1. Putting it together,</p>
+<p><span class="math display">\[
+Pr[rank(M(f_\pi)) = 2^{n/2}] &lt; 1
+\]</span></p>
+<p>This is a contradiction! Hence, our assumption is incorrect. Thus, we have proved part 2 of theorem 1.1. ## Construction of ABP for arc full rank polynomial</p>
+<p>So, we will construct an ABP in which every path between start-node and end-node corresponds to a specific execution of the random process which samples arc-partitions.</p>
+<p>Let us construct an ABP through an example. Each node in the ABP corresponds to an arc [L,R], which sends an edge to each of the nodes [L-2,R], [L-1,R+1] and [L,R+2]. The edges have specially chosen labels that guarantee full rank w.r.t. to every arc-partition. The start node is the empty arc <span class="math inline">\(\phi\)</span>, the end node is the whole cycle [n] and intermediate nodes are even sized arcs on the cycle.</p>
+<p><strong>Example:</strong></p>
+<p>Let us construct an ABP for 8-cycle graph. We have <span class="math inline">\(X=\{x_0,x_1,x_2,x_3,x_4,x_5,x_6,x_7\}\)</span> and <span class="math inline">\(\Lambda = \{\lambda_e\}\)</span></p>
+<p>At t=0, we know the start node is <span class="math inline">\(\phi\)</span></p>
+<p>At t=1, there is only one node [0,1]. We connect the start node to it with edge <span class="math inline">\(\lambda_e(x_0+x_1)\)</span>.</p>
+<p>At t&gt;1, for any node [L,R] of size 2t, we add 3 edges:</p>
+<ul>
+<li>Edge <span class="math inline">\(e_1\)</span> between [L,R] and [L-2,R] is labelled <span class="math inline">\(\lambda_{e_1}(x_{L-2}+x_{L-1})\)</span></li>
+<li>Edge <span class="math inline">\(e_2\)</span> between [L,R] and [L-1,R+1] is labelled <span class="math inline">\(\lambda_{e_2}(x_{L-1}+x_{R+1})\)</span></li>
+<li>Edge <span class="math inline">\(e_3\)</span> between [L,R] and [L,R+2] is labelled <span class="math inline">\(\lambda_{e_3}(x_{R+1}+x_{R+2})\)</span></li>
+</ul>
+<p>Then, we can see that for every path <span class="math inline">\(\gamma\)</span> from start-node to end-node in the ABP, the list of edges along <span class="math inline">\(\gamma\)</span> yields a pairing P, every edge e in <span class="math inline">\(\gamma\)</span> corresponds to a pair <span class="math inline">\(P_e=\{i_e,j_e\}\)</span> of nodes in the n-cycle. Thus,</p>
+<p><span class="math display">\[
+F = \sum_{\gamma} \prod_{e \in \gamma} \lambda_e \;\cdot\; \prod_{e \in \gamma} (x_{i_e} + x_{j_e})
+\]</span></p>
+<p>This ABP is multilinear : because every path is a multiplication as above in which each <span class="math inline">\(x_i\)</span> appears at most once. The size of this ABP is <span class="math inline">\(O(n^2)\)</span> since there are n even sized arcs possible for each arc size and the arc sizes are 0,2,4 → n i.e.&nbsp;n different sizes.</p>
+<p>F has zero-one coefficients since given the <span class="math inline">\(\prod_{e \in \gamma} \lambda_e\)</span> we can reconstruct <span class="math inline">\(\pi\)</span> (since it is unique to <span class="math inline">\(\gamma\)</span>).</p>
+<p>Mainly, we have to show that F is arc full rank i.e.&nbsp;for any arc-partition <span class="math inline">\(\pi\)</span>, the matrix <span class="math inline">\(M(F_\pi)\)</span> has full rank <span class="math inline">\(2^{n/2}\)</span>. We know that the arc-partition <span class="math inline">\(\pi\)</span> comes from the pairing <span class="math inline">\(P = P(\pi)\)</span> which corresponds to a path <span class="math inline">\(\gamma = \gamma(\pi)\)</span>. Consider the polynomial f obtained from <span class="math inline">\(F_\pi\)</span> by setting <span class="math inline">\(\lambda_e  = 1\)</span> for every e in <span class="math inline">\(\gamma\)</span>, and <span class="math inline">\(\lambda_e  = 0\)</span> for every e not in <span class="math inline">\(\gamma\)</span>. Then the resulting polynomial, after applying <span class="math inline">\(\pi\)</span> is:</p>
+<p><span class="math display">\[
+f_\pi = \prod_{t \in [n/2]} (y_t + z_t)
+\]</span></p>
+<p>For any <span class="math inline">\(y_t,z_t\)</span> we can write <span class="math inline">\(M(y_t + z_t) =&nbsp;\begin{pmatrix}0 &amp; 1 \\1 &amp; 0\end{pmatrix},\)</span> which clearly has rank 2 over the field F. Then by property 2, we know that rank of M(f) is full. Then using Lemma 3 (below), we can say that the rank of <span class="math inline">\(M(F_\pi)\)</span> over <span class="math inline">\(F(\Lambda)\)</span> is atleast the rank of M(f) over field F. Hence, we can write the theorem:</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem 3.4
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Over every field <span class="math inline">\(\mathbb{F}\)</span>, the polynomial <span class="math inline">\(F = F_n\)</span> defined above satisfies the following:</p>
+<ol type="1">
+<li>F is computed by a linear-size (in the number of variables, which is <span class="math inline">\(O(n^2)\)</span>) multilinear ABP. The ABP for F can be constructed uniformly in time <span class="math inline">\(O(n^2)\)</span>.</li>
+<li>F has zero-one coefficients.</li>
+<li>F is arc-full-rank as a polynomial in the variables X over the field <span class="math inline">\(\mathbb{F}(\Lambda)\)</span> of rational functions in <span class="math inline">\(\Lambda\)</span></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma 3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let K be a field and consider L, the field of rational functions <span class="math inline">\(K(\lambda_1,\ldots,\lambda_m)\)</span>. If f is a polynomial in L[Y,Z] and <span class="math inline">\(a_1,\ldots,a_m\)</span> are elements of K, let g be the polynomial in K[Y,Z] obtained from f by substituting <span class="math inline">\(\lambda_i\)</span> with <span class="math inline">\(a_i\)</span>. Then the rank over K of M(g) is at most the rank over L of M(f).</p>
+</div>
+</div>
+<p>Thus, we have been able to describe a n-variate polynomial f which can be computed by the linear-size ABP F but cannot be computed by a multilinear formula <span class="math inline">\(\phi\)</span> of size <span class="math inline">\(s \leq n^{\Omega(logn)}\)</span>. Thus, we have proved part 1 of theorem 1.1.</p>
+</section>
+<section id="arc-partitions-and-product-polynomials" class="level2">
+<h2 class="anchored" data-anchor-id="arc-partitions-and-product-polynomials">Arc-partitions and product polynomials</h2>
+<p>We still need to prove Lemma 2. Let’s restate it:</p>
+<p><strong>Lemma 2:</strong> There exists a constant <span class="math inline">\(\delta \gt 0\)</span> so that the following holds. Let n be a large enough even integer. Let f be a (KT)-product polynomial in n variables with <span class="math inline">\(K \geq (logn)/100\)</span> and <span class="math inline">\(T \geq n^{7/8}\)</span>. Then <span class="math inline">\(P[rank(M(f_\pi)) \geq 2^{n/2 - n^\delta}] \leq n^{-\delta logn}\)</span> where <span class="math inline">\(\pi\)</span> ~ D.</p>
+<p>Let S be a partition of the n-cycle to K parts, namely <span class="math inline">\(S = (S_1, S_2 \dots S_k)\)</span> where <span class="math inline">\(\bigcup_{k \in [K]} S_k\)</span> is the whole cycle and <span class="math inline">\(S_k \cap S_{k'} = \varnothing \quad \text{for all } k \ne k' \text{ in } [K].\)</span></p>
+<p>Think of [K] as a set of colors and S as a coloring of the cycle.</p>
+<p>For a pairing P, define the number of k-violations as:</p>
+<p>$$ V_k(P) = {, P_t P : P_t S_k = 1 ,}</p>
+<p>$$</p>
+<p>i.e.&nbsp;the set of pairs in which one color is k and the other color is different.</p>
+<p><span class="math display">\[
+G(P) = \bigl|\{\, k \in [K] : |V_k(P)| \ge n^{1/1000} \,\}\bigr|.
+\]</span></p>
+<p>V(P) defines how many edges leave color k and G(P) is the set of colors that have lots of such edges.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>n =8, k =3. <span class="math inline">\(P= (\{0,1\},\{7,2\},\{3,4\},\{5,6\})\)</span></p>
+<p><span class="math inline">\(S_1=\{0,1,4\}\)</span> (red), <span class="math inline">\(S_2=\{2,5\}\)</span> (blue), <span class="math inline">\(S_3=\{3,6,7\}\)</span> (green).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="8cycle.png" class="img-fluid figure-img"></p>
+<figcaption>8cycle.png</figcaption>
+</figure>
+</div>
+<p>For k=1, lets go through the pairs in P:</p>
+<ul>
+<li>{0,1} both are in <span class="math inline">\(S_1\)</span></li>
+<li>{7,2} both are not in <span class="math inline">\(S_1\)</span></li>
+<li>{3,4} only 4 in <span class="math inline">\(S_1\)</span></li>
+<li>{5,6} both not in <span class="math inline">\(S_1\)</span></li>
+</ul>
+<p>Hence <span class="math inline">\(|V_1(P)| = 1\)</span>.</p>
+<p>Similarly, <span class="math inline">\(|V_2(P)|=2,|V_3(P)|=2.\)</span></p>
+<p>Here n=8, so <span class="math inline">\(n^{1/1000}\)</span> is roughly 1. Then, <span class="math inline">\(G(P)=3\)</span>.</p>
+<p>We can think of a color as a group, and a node in the color group with an edge to another color’s node has a cross edge.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lemma 4
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There exists a constant C &gt; 0 such that for all <span class="math inline">\(C \leq K \leq n^{1/1000}\)</span> the following holds: Let <span class="math inline">\(S = (S_1, S_2 \dots S_k)\)</span> be a partition of the n-cycle and suppose that <span class="math inline">\(|S_k| \geq n^{7/8} \forall k \in [K]\)</span>. Then,</p>
+<p><span class="math display">\[
+Pr[G(P)\leq K/1000]\leq n^{-\Omega(K)}
+\]</span></p>
+<p>where P ~ <span class="math inline">\(D_P\)</span>.</p>
+</div>
+</div>
+<p>We will prove this lemma in the next section. It is saying that the probability that few colors have many cross edges is very low. Or equivalently, with overwhelming probability, <em>many</em> colors have many cross-edges.</p>
+<p><strong>Proof:</strong></p>
+<p>Let f be a (K,T)-product with <span class="math inline">\(K = \left\lceil \frac{\log n}{100} \right\rceil
+, T = \left\lceil n^{7/8} \right\rceil\)</span> , partition S of the cycle made by variables of f.&nbsp;Let P~DP, <span class="math inline">\(\pi\)</span>~D be a random partition obtained from P. For every P, define a graph H(P) such that:</p>
+<ul>
+<li>Nodes of H(P) are colors k in [K] so that <span class="math inline">\(|V_k(P)| \geq n^{1/1000}\)</span></li>
+<li>Every two nodes <span class="math inline">\(k \neq k'\)</span> in G(P) are connected by an edge if <span class="math inline">\(|V_k(P) \cap V_{k'}(P)| \geq n^{1/1500}\)</span></li>
+<li>The degree of each node in H(P) is atleast 1. If degree of node k in H(P) is 0, no more than <span class="math inline">\(n^{1/1500}\)</span> edges connect it to k’. Then the total number of pairs from k to all other colors in H(P) is <span class="math inline">\(\leq (G(P)-1).n^{1/1500}\)</span> that is <span class="math inline">\(\leq k.n^{1/1500}\)</span>. Then the total number of edges from k color node is <span class="math inline">\(|V_k(P)| \leq k.n^{1/1500} = logn.n^{1/1500}\)</span>. But <span class="math inline">\(V_k(P)\geq n^{1/1000}\)</span>.</li>
+</ul>
+<p>Claim: Let H be a graph with minimal degree at least one and M nodes, then there is a subset <span class="math inline">\(\{h_1 \dots h_N\}\)</span> of the nodes of H of size <span class="math inline">\(N \geq M/2 -1\)</span>, so that for every <span class="math inline">\(j \in [N-1]\)</span>, the degree of <span class="math inline">\(h_{j+1}\)</span> in the graph induced on the nodes not in <span class="math inline">\(\{h_1 \dots h_j\}\)</span> is at least one.</p>
+<p><strong>Proof by induction:</strong></p>
+<p>Base case M≤2, if M = 1, degree ≥1 not possible! If M=2, the two nodes are connected to each other, we can pick either one and we are done.</p>
+<p>So for M &gt; 2,</p>
+<p>Pick <span class="math inline">\(h_1\)</span> - the node having least degree, and consider the graph <span class="math inline">\(H_1\)</span> having removed that node.</p>
+<p><span class="math inline">\(H_1\)</span> has at most one isolated (degree=0) node, lets call it <span class="math inline">\(h_1'\)</span>.</p>
+<p>Now consider the graph removing <span class="math inline">\(\{h_1,h_1'\}\)</span> having M-2 nodes which would also have minimal degree ≥ 1. We can say that there is a subset <span class="math inline">\(\{h_2 \dots h_N\}\)</span> to satisfy the claim where N ≥ M/2 -2. We can add <span class="math inline">\(h_1\)</span> back to get N+1 ≥ M/2 -1. At each step we can remove 1 or 2 nodes such that we get a sequence <span class="math inline">\(\{h_1 \dots h_N\}\)</span> that satisfies the claim.</p>
+<p>Now we have H(P) with M=|G(P)| and minimal degree≥1. Then there is a subset of colors <span class="math inline">\(\{k_1 \dots k_{K'}\}\)</span> with K’ ≥ |G(P)|/2 -1 such that the claim above is fulfilled.</p>
+<p>View the sampling of <span class="math inline">\(\pi\)</span> from P as happening in the sequence <span class="math inline">\(k_1 \dots k_{K'}\)</span>, first for all pairs touching <span class="math inline">\(k_1\)</span>, then for remaining pairs touching <span class="math inline">\(k_2\)</span> and so on. For each color <span class="math inline">\(k_j\)</span> that has not been considered yet, there are still many cross pairs connecting it to other colors.</p>
+<p>For every <span class="math inline">\(j \in [K]\)</span>, define <span class="math inline">\(E_j\)</span> to be the event that <span class="math inline">\(|Y_{k_j}-|S_{k_j}|/2| \leq n^{1/5000}\)</span>, where <span class="math inline">\(Y_{k_j}=|\pi^{-1}(Y)\cap S_{k_j}|\)</span>. Remember, this <span class="math inline">\(Y_{k_j}\)</span> just means variables in X that will map to variables in Y and that have color <span class="math inline">\(k_j\)</span>. So, the event <span class="math inline">\(E_j\)</span> means that the color <span class="math inline">\(k_j\)</span> is roughly balanced between Y and Z. Since <span class="math inline">\(|S_k| \geq n^{7/8}\)</span> this is a pretty small error window around half.</p>
+<p>Now, conditioned on <span class="math inline">\(E_1 \dots E_j\)</span>, there are at least <span class="math inline">\(n^{1/1500}\)</span> pairs <span class="math inline">\(P_t\)</span> such that <span class="math inline">\(|P_t \cap S_{k_j}|=1\)</span> are not yet assigned variables in Y,Z (since at step j+1, color <span class="math inline">\(k_{j+1}\)</span> still has a neighbour k’ in <span class="math inline">\(k_{j+2}...k_{K'}\)</span>.</p>
+<p>Then, the element in <span class="math inline">\(P_t \cap S_{k_j}\)</span> is assigned a Y variable with probability 1/2, for each, independently of any other <span class="math inline">\(P_t\)</span>. Then for this event, the universe is <span class="math inline">\(U \geq n^{1/1500}\)</span> and the marginal is 1/2, which is like a binomial random variable B with U independent fair coin tosses. Then for any specific k,</p>
+<p><span class="math display">\[
+Pr[B=k]=O(1/\sqrt(U)) \leq O(n^{-1/3000})
+\]</span></p>
+<p>Hence, for all <span class="math inline">\(j \in [K]\)</span>, we find the conditionally probability for event <span class="math inline">\(E_j\)</span>,</p>
+<p><span class="math display">\[
+\mathbb{P}[E_j \mid E_1, \ldots, E_{j-1}, P]\;\le\;\mathbb{P}_B\!\left[\, U/2 - n^{1/5000} \;\le\; B \;\le\; U/2 + n^{1/5000} \,\right]\;\le\;O\!\left( 2 n^{1/5000} n^{-1/3000} \right)\;\le\;n^{-\Omega(1)}
+\]</span></p>
+<p>By chain rule, <span class="math inline">\(\mathbb{P}[\text{all balanced} \mid P] \le n^{-\Omega(G(P))}\)</span>. Average this over all pairings for G(P) ≥ K/1000,</p>
+<p><span class="math inline">\(\mathbb{P}[\text{all balanced}∣G(P)&gt;K/1000]≤\mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) &gt; K/1000 \right] \leq n^{-\Omega(k)}\)</span></p>
+<p>We can use Bayes theorem,</p>
+<p><span class="math display">\[
+\mathbb{P}[\text{all colors balanced}]=\mathbb{P}[\text{all balanced} \mid G(P) &gt; K/1000] \cdot \mathbb{P}[G(P) &gt; K/1000]\;+\;\mathbb{P}[\text{all balanced} \mid G(P) \le K/1000] \cdot \mathbb{P}[G(P) \le K/1000]
+\]</span></p>
+<p>Using Lemma 4,</p>
+<p><span class="math display">\[
+\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right]\;\le\;\mathbb{E}\!\left[\, n^{-\Omega(G(P))} \,\middle|\, G(P) &gt; K/1000 \right]\;+\;n^{-\Omega(K)}\;=\;n^{-\Omega(\log n)}
+\]</span></p>
+<p>Using Property 2&amp;3, <span class="math inline">\(\operatorname{rank}(M(f^{\Pi}))\;\le\;\prod_{k=1}^{K} 2^{\min(Y_k, Z_k)}\;=\;2^{\sum_{k=1}^{K} \min(Y_k, Z_k)}\)</span></p>
+<p><span class="math inline">\(\min(Y_k, Z_k)
+= \frac{Y_k + Z_k}{2} - \frac{\lvert Y_k - Z_k\rvert}{2},
+Y_k + Z_k = |S_k|\)</span>, then <span class="math inline">\(\min(Y_k, Z_k)
+= \frac{|S_k|}{2} - \lvert Y_k-\frac{|S_k|}{2}\rvert\)</span></p>
+<p>Then, <span class="math inline">\(\sum_{k=1}^{K} \min(Y_k, Z_k) = \frac{n}{2} - \sum_{k=1}^{K} \lvert Y_k-\frac{|S_k|}{2}\rvert\)</span>.</p>
+<p>Suppose there is some k that is unbalanced, <span class="math inline">\(\sum_{k=1}^{K} \lvert Y_k-\frac{|S_k|}{2}\rvert \geq \lvert Y_k-\frac{|S_k|}{2}\rvert \gt n^{1/5000}\)</span>.</p>
+<p>Then, <span class="math inline">\(\operatorname{rank}(M(f^{\Pi})) \lt 2^{\,n/2 - n^{1/5000}}\)</span>, or taking the contrapositive, we get the below equation</p>
+<p><span class="math display">\[
+\mathbb{P}\!\left[\, \operatorname{rank}(M(f_{\Pi})) \ge 2^{\,n/2 - n^{1/5000}} \right]\;\le\;\mathbb{P}\!\left[\, |Y_k - |S_k|/2| \le n^{1/5000} \;\text{ for all } k \in [K] \,\right] \leq n^{-\Omega(\log n)}
+\]</span></p>
+<p>Hence, we have proved Lemma 3.</p>
+<p>The proof for Lemma 4 is remaining, but I leave it for the future.</p>
+<p>The main insight is that multilinear formulas necessarily break their input variables into many “color blocks”, and for the polynomial to have full rank under any partition, each block must split almost perfectly evenly between Y and Z. But a random arc-partition almost never splits <em>all</em> blocks evenly; since the probability that the binomial will land in a tiny window around its mean is small to evenly split any given block is small, and for this to happen for a k blocks is very unlikely. This forces every small formula to fail rank-fullness, while the explicitly constructed ABP-based polynomial always maintains full rank. Hence formulas need superpolynomial size, whereas ABPs do not.</p>
+<section id="citation" class="level3">
+<h3 class="anchored" data-anchor-id="citation">Citation</h3>
+<p>Zeev Dvir, Guillaume Malod, Sylvain Perifel, and Amir Yehudayoff. 2012. Separating multilinear branching programs and formulas. In Proceedings of the forty-fourth annual ACM symposium on Theory of computing (STOC ’12). Association for Computing Machinery, New York, NY, USA, 615–624. https://doi.org/10.1145/2213977.2214034</p>
+<p>A. Shpilka and A. Yehudayo . Arithmetic circuits: A survey of recent results and open questions. Found. Trends Theor. Comput. Sci. 5, pages 207388, 2010.</p>
+<p>P.S. I have maintained the same theorem numbering from the paper, but the lemma numbering is mismatched.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/neerjakasture\.github\.io\/blog");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© 2025 Neerja Kasture</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

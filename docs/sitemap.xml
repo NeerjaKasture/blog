@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://neerjakasture.github.io/blog/posts/first_post/first_post.html</loc>
-    <lastmod>2025-08-24T21:01:08.626Z</lastmod>
+    <lastmod>2025-11-25T08:57:54.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://neerjakasture.github.io/blog/posts/ACT/Separating Multilinear Branching Programs and Form 7c05f66a1beb46849f8ac054607fcbcb.html</loc>
+    <lastmod>2025-11-25T09:20:52.765Z</lastmod>
   </url>
   <url>
     <loc>https://neerjakasture.github.io/blog/index.html</loc>
@@ -10,6 +14,6 @@
   </url>
   <url>
     <loc>https://neerjakasture.github.io/blog/posts/Conditional Neural Process/CNP.html</loc>
-    <lastmod>2025-09-07T22:50:50.714Z</lastmod>
+    <lastmod>2025-09-07T22:54:25.302Z</lastmod>
   </url>
 </urlset>
