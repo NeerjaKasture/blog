@@ -5,10 +5,10 @@ project:
 website:
   title: "Neerja Kasture's Blog"
   site-url: https://neerjakasture.github.io/blog
-  navbar:
-    right:
-      - text: Homepage
-        href: https://neerjakasture.github.io
+  navbar: true
+    #right:
+     # - text: Homepage
+      #  href: https://neerjakasture.github.io
       # - text: "About"
       #   href: about.qmd
   page-footer:
